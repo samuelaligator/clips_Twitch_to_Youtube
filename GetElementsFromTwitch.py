@@ -12,6 +12,7 @@ class GetElementsFromTwitch:
         # open a chromium window not visible
         chrome_options = Options()
         chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--lang=fr")
         chrome_options.add_argument("--window-size=%s" % GetElementsFromTwitch.WINDOW_SIZE)
         chrome_options.binary_location = GetElementsFromTwitch.CHROME_PATH
         self.driver = webdriver.Chrome(executable_path=GetElementsFromTwitch.CHROMEDRIVER_PATH,
@@ -48,6 +49,7 @@ class GetElementsFromTwitch:
     def get_clip_views(self):
         print("getting clip views")
         list_clip_view = self.driver.find_elements(By.CSS_SELECTOR, '.gUtzBI .tw-media-card-stat')
+        print(list_clip_view)
         for i in list_clip_view:
             clip_view = i.text
             if "k" in clip_view:

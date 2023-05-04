@@ -21,7 +21,6 @@ class Thumbnail:
                    int(bg_size[1] / 2) - int(font_size[3] / 2) - int(bg_size[1] / 4)), streamer_name, font=self.font,
                   stroke_fill="black", stroke_width=12)
         text.text((20, -10), number, font=self.font2, stroke_fill="black", stroke_width=5)
-        background.show()
         background.save("thumbnail/thumbnail.png")
 
 

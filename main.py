@@ -17,16 +17,19 @@ class App:
         self.streamer_name = ""
 
         while True:
+            self.fill_StreamersName()
             for i in range(self.database.table_length("StreamersName")):
                 self.streamer_name = self.database.select_data("streamer", "StreamersName", "ORDER BY download LIMIT 1")[0][0]
-                self.len_clips = self.database.table_length("Clips")
-
+                self.fill_Clips()
+                self.download_clips()
+                self.mount_video()
                 self.create_thumbnail()
                 hour = int(datetime.now().strftime('%H'))
                 while not hour == 7 or hour == 17:
                     time.sleep(600)
                 self.upload_video()
                 self.database.update("Streamers_name", "download", "id", 1, i+1)
+            self.len_clips = self.database.table_length("Clips")
 
     def fill_StreamersName(self):
         self.database.delete_table("StreamersName")
