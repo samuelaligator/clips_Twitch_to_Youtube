@@ -1,5 +1,4 @@
 import time
-
 from GetElementsFromTwitch import GetElementsFromTwitch
 from Database import Database
 from MountVideo import MountVideo
@@ -17,9 +16,13 @@ class App:
         self.streamer_name = ""
 
         while True:
-            self.fill_StreamersName()
-            for i in range(self.database.table_length("StreamersName")):
+            self.download = self.database.select_data("download", "StreamersName", "ORDER BY download LIMIT 1")
+
+            if len(self.download) == 0 or self.download[0][0] == 1:
+                self.fill_StreamersName()
+            else:
                 self.streamer_name = self.database.select_data("streamer", "StreamersName", "ORDER BY download LIMIT 1")[0][0]
+                id = self.database.select_data("id", "StreamersName", "ORDER BY download LIMIT 1")[0][0]
                 self.fill_Clips()
                 self.download_clips()
                 self.mount_video()
@@ -27,9 +30,9 @@ class App:
                 hour = int(datetime.now().strftime('%H'))
                 while not hour == 7 or hour == 17:
                     time.sleep(600)
+                    hour = int(datetime.now().strftime('%H'))
                 self.upload_video()
-                self.database.update("Streamers_name", "download", "id", 1, i+1)
-            self.len_clips = self.database.table_length("Clips")
+                self.database.update("Streamers_name", "download", "id", 1, id)
 
     def fill_StreamersName(self):
         self.database.delete_table("StreamersName")
@@ -96,8 +99,9 @@ class App:
 
     def create_thumbnail(self):
         self.montage.save_a_frame()
+        date = self.date()
         thumbnail = Thumbnail()
-        thumbnail.create_thumbnail(self.streamer_name, "1")
+        thumbnail.create_thumbnail(self.streamer_name, date)
 
     def upload_video(self):
         youtube_api = YoutubeAPI()
@@ -121,20 +125,22 @@ class App:
             if not category[i][0] in tag_list:
                 tag_list.append(category[i][0])
 
-
-        # current month and year
-        now = datetime.now()
-        month_converter = {1: "de janvier", 2: "de février", 3: "de mars", 4: "d'avril", 5: "de mai", 6: "de juin",
-                           7: "de juillet", 8: "d' août", 9: "de septembre", 10: "d'octobre", 11: "de novembre",
-                           12: "de décembre"}
-        month = month_converter[now.month]
-        year = now.year
+        date = self.date()
 
         # upload the video
         youtube_api.upload_to_youtube("Best Of du TWITCH français #1",
-                                      f"Petit Best Of des meilleurs clips Twitch de {streamer[0]} du mois {month} {year} \n\n {description}",
+                                      f"Petit Best Of des meilleurs clips Twitch de {streamer[0]} du mois de {date} \n\n {description}",
                                       tag_list, "public", "./thumbnail/thumbnail.png")
 
+    def date(self):
+        # current month and year
+        now = datetime.now()
+        month_converter = {1: "janvier", 2: "février", 3: "mars", 4: "avril", 5: "mai", 6: "juin",
+                           7: "juillet", 8: "août", 9: "septembre", 10: "octobre", 11: "novembre",
+                           12: "décembre"}
+        month = month_converter[now.month]
+        year = now.year
+        return f"{month} {year}"
 
 App()
 

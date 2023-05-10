@@ -4,19 +4,19 @@ from selenium.webdriver.common.by import By
 
 
 class GetElementsFromTwitch:
-    CHROME_PATH = '/usr/bin/chromium'
+    CHROME_PATH = '/usr/bin/chromium-browser'
     CHROMEDRIVER_PATH = '/usr/bin/chromedriver'
     WINDOW_SIZE = "1920,1080"
 
     def __init__(self):
         # open a chromium window not visible
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--lang=fr")
-        chrome_options.add_argument("--window-size=%s" % GetElementsFromTwitch.WINDOW_SIZE)
-        chrome_options.binary_location = GetElementsFromTwitch.CHROME_PATH
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--lang=fr")
+        options.add_argument("--window-size=%s" % GetElementsFromTwitch.WINDOW_SIZE)
+        options.binary_location = GetElementsFromTwitch.CHROME_PATH
         self.driver = webdriver.Chrome(executable_path=GetElementsFromTwitch.CHROMEDRIVER_PATH,
-                                       chrome_options=chrome_options)
+                                       options=options)
         self.initialize_clip_var()
 
     def initialize_clip_var(self):
