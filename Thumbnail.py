@@ -9,6 +9,7 @@ class Thumbnail:
         self.font2 = ImageFont.truetype("SourceSans3-Black.otf", size=100)
 
     def create_thumbnail(self, streamer_name, number):
+        print("creating the thumbnail")
         background = Image.open(r"./image/background.png")
         background = background.filter((ImageFilter.GaussianBlur(1.8)))
         bg_size = background.size

@@ -11,9 +11,10 @@ class GetElementsFromTwitch:
     def __init__(self):
         # open a chromium window not visible
         options = Options()
-        options.add_argument("--headless")
-        options.add_argument("--lang=fr")
+        options.add_argument("--headless=now")
         options.add_argument("--window-size=%s" % GetElementsFromTwitch.WINDOW_SIZE)
+        prefs = {"intl.selected_languages": "fr, fr_FR"}
+        options.add_experimental_option("prefs", prefs)
         options.binary_location = GetElementsFromTwitch.CHROME_PATH
         self.driver = webdriver.Chrome(executable_path=GetElementsFromTwitch.CHROMEDRIVER_PATH,
                                        options=options)

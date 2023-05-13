@@ -15,8 +15,10 @@ class MountVideo:
         return concatenate_videoclips(self.clip)
 
     def write_videofile(self, final, fps):
+        print("writing video file")
         final.write_videofile("./video/video.mp4", fps=fps)
 
     def save_a_frame(self):
+        print("saving a frame from the thumbnail")
         clip = VideoFileClip("./clip/1.mp4")
         clip.save_frame("./image/background.png", t=2)

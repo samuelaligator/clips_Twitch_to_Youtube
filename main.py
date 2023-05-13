@@ -28,11 +28,12 @@ class App:
                 self.mount_video()
                 self.create_thumbnail()
                 hour = int(datetime.now().strftime('%H'))
-                while not hour == 7 or hour == 17:
-                    time.sleep(600)
+                while hour != 10 and hour != 17:
+                    if hour != 10 and hour != 17:
+                        time.sleep(600)
                     hour = int(datetime.now().strftime('%H'))
                 self.upload_video()
-                self.database.update("Streamers_name", "download", "id", 1, id)
+                self.database.update("StreamersName", "download", "id", 1, id)
 
     def fill_StreamersName(self):
         self.database.delete_table("StreamersName")
@@ -128,7 +129,7 @@ class App:
         date = self.date()
 
         # upload the video
-        youtube_api.upload_to_youtube("Best Of du TWITCH français #1",
+        youtube_api.upload_to_youtube(f"Best Of des clips twitch de {streamer[0]}",
                                       f"Petit Best Of des meilleurs clips Twitch de {streamer[0]} du mois de {date} \n\n {description}",
                                       tag_list, "public", "./thumbnail/thumbnail.png")
 

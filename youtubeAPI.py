@@ -10,6 +10,7 @@ class YoutubeAPI:
         self.video = LocalVideo(file_path="video/video.mp4")
 
     def upload_to_youtube(self, title, description, tags_list, privacy, thumbnail_path):
+        print("uploading the video to youtube")
         # setting snippet
         self.video.set_title(title)
         self.video.set_description(description)
